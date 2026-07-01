@@ -53,6 +53,8 @@ import android.widget.Toast;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -75,6 +77,7 @@ public final class MainActivity extends Activity implements LocationListener {
     private static final int LOCATION_REQUEST = 1101;
     private static final int CAMERA_REQUEST = 1102;
     private static final int FILE_CHOOSER_REQUEST = 1103;
+    private static final int NOTIFICATION_REQUEST = 1104;
     private static final long EXIT_CONFIRM_WINDOW_MS = 2_000L;
     private static final long MOCK_CLEAR_DELAY_MS = 10_000L;
     private static final int REAL_FIXES_TO_CLEAR = 3;
@@ -121,6 +124,7 @@ public final class MainActivity extends Activity implements LocationListener {
         buildInterface();
         configureWebView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission();
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT,
                 this::handleBackNavigation
@@ -257,6 +261,17 @@ public final class MainActivity extends Activity implements LocationListener {
             || OAUTH_APP_CALLBACK_PATH.equals(path)
             || "/api/auth/oauth/mobile/complete".equals(path)
             || path.startsWith(OAUTH_START_PATH);
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return;
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return;
+        requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, NOTIFICATION_REQUEST);
+    }
+
+    private void registerFcmToken() {
+        FirebaseMessaging.getInstance().getToken()
+            .addOnSuccessListener(DevworksFcmTokenSender::send);
     }
 
     private boolean isAttendancePage() {
@@ -1011,6 +1026,7 @@ public final class MainActivity extends Activity implements LocationListener {
         public void onPageFinished(WebView view, String url) {
             progressBar.setVisibility(View.GONE);
             if (!pageLoadFailed && !(mockLocationBlocked && isAttendancePage())) hideMessage();
+            if (isAllowed(Uri.parse(url)) && !isNavigationBoundaryUrl(url)) registerFcmToken();
         }
 
         @Override

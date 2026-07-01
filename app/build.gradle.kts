@@ -2,6 +2,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 val uploadKeystorePropertiesFile = file(
@@ -27,8 +28,8 @@ android {
         applicationId = "co.id.devworks.attendance"
         minSdk = 24
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "android.test.InstrumentationTestRunner"
     }
@@ -71,6 +72,8 @@ android {
 
 dependencies {
     implementation("androidx.browser:browser:1.9.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.15.0"))
+    implementation("com.google.firebase:firebase-messaging")
 }
 
 configurations.configureEach {

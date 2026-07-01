@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1006954505145",
+    "project_id": "devworks-7b4b0",
+    "storage_bucket": "devworks-7b4b0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006954505145:android:eb4906e9704aca86a58c68",
+        "android_client_info": {
+          "package_name": "co.id.devworks.attendance.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVmAdl7xOwhRQPO9ZPclg9jsDeeRTfaso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

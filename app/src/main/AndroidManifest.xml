@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature android:name="android.hardware.location.gps" android:required="true" tools:ignore="UnnecessaryRequiredFeature" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -51,5 +52,12 @@
                     android:host="oauth-complete" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".DevworksFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>
