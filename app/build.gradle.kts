@@ -1,5 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+val uploadKeystorePropertiesFile = file(
+    System.getenv("DEVWORKS_UPLOAD_KEYSTORE_PROPERTIES")
+        ?: "${rootProject.projectDir}/keystore.properties"
+)
+val uploadKeystoreProperties = Properties().apply {
+    if (uploadKeystorePropertiesFile.isFile) {
+        uploadKeystorePropertiesFile.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -21,12 +33,26 @@ android {
         testInstrumentationRunner = "android.test.InstrumentationTestRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            if (uploadKeystorePropertiesFile.isFile) {
+                storeFile = file(uploadKeystoreProperties.getProperty("storeFile"))
+                storePassword = uploadKeystoreProperties.getProperty("storePassword")
+                keyAlias = uploadKeystoreProperties.getProperty("keyAlias")
+                keyPassword = uploadKeystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
         release {
+            if (uploadKeystorePropertiesFile.isFile) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
