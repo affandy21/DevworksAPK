@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Devworks</string>
+    <string name="press_back_to_exit">Tekan kembali lagi untuk keluar</string>
+    <string name="connection_title">Halaman tidak dapat dibuka</string>
+    <string name="connection_message">Periksa koneksi internet lalu coba kembali.</string>
+    <string name="retry">Coba lagi</string>
+    <string name="permission_title">Izin perangkat dibutuhkan</string>
+    <string name="permission_message">Aktifkan izin lokasi presisi dan kamera agar absensi dapat digunakan.</string>
+    <string name="open_settings">Buka pengaturan</string>
+    <string name="mock_title">Fake GPS terdeteksi</string>
+    <string name="mock_message">Absensi diblokir karena perangkat mengirim lokasi tiruan. Matikan aplikasi Fake GPS dan opsi lokasi tiruan, lalu coba kembali.</string>
+    <string name="checking_location">Memeriksa lokasi asli&#8230;</string>
+</resources>
