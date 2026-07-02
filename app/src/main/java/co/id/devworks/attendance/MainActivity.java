@@ -3,6 +3,8 @@ package co.id.devworks.attendance;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
@@ -78,6 +80,7 @@ public final class MainActivity extends Activity implements LocationListener {
     private static final int CAMERA_REQUEST = 1102;
     private static final int FILE_CHOOSER_REQUEST = 1103;
     private static final int NOTIFICATION_REQUEST = 1104;
+    static final String ATTENDANCE_NOTIFICATION_CHANNEL = "attendance";
     private static final long EXIT_CONFIRM_WINDOW_MS = 2_000L;
     private static final long MOCK_CLEAR_DELAY_MS = 10_000L;
     private static final int REAL_FIXES_TO_CLEAR = 3;
@@ -123,6 +126,7 @@ public final class MainActivity extends Activity implements LocationListener {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         buildInterface();
         configureWebView();
+        createNotificationChannel();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestNotificationPermission();
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
@@ -131,6 +135,7 @@ public final class MainActivity extends Activity implements LocationListener {
             );
         }
         if (handleOAuthCallback(getIntent())) return;
+        if (handleNotificationLink(getIntent())) return;
         boolean restoredFailure = savedInstanceState != null
             && savedInstanceState.getBoolean(STATE_PAGE_LOAD_FAILED, false);
         if (restoredFailure || !isOnline()) {
@@ -267,6 +272,18 @@ public final class MainActivity extends Activity implements LocationListener {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return;
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return;
         requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, NOTIFICATION_REQUEST);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
+        NotificationChannel channel = new NotificationChannel(
+            ATTENDANCE_NOTIFICATION_CHANNEL,
+            "Absensi",
+            NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.setDescription("Notifikasi pengajuan dan approval absensi.");
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager != null) manager.createNotificationChannel(channel);
     }
 
     private void registerFcmToken() {
@@ -471,11 +488,18 @@ public final class MainActivity extends Activity implements LocationListener {
         return true;
     }
 
+    private boolean handleNotificationLink(Intent intent) {
+        Uri uri = intent == null ? null : intent.getData();
+        if (uri == null || !isAllowed(uri)) return false;
+        webView.loadUrl(uri.toString());
+        return true;
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        handleOAuthCallback(intent);
+        if (!handleOAuthCallback(intent)) handleNotificationLink(intent);
     }
 
     private boolean isPdfUrl(Uri uri) {
