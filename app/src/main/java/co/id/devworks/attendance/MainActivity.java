@@ -136,6 +136,7 @@ public final class MainActivity extends Activity implements LocationListener {
         }
         if (handleOAuthCallback(getIntent())) return;
         if (handleNotificationLink(getIntent())) return;
+        if (handleNotificationExtras(getIntent())) return;
         boolean restoredFailure = savedInstanceState != null
             && savedInstanceState.getBoolean(STATE_PAGE_LOAD_FAILED, false);
         if (restoredFailure || !isOnline()) {
@@ -495,11 +496,29 @@ public final class MainActivity extends Activity implements LocationListener {
         return true;
     }
 
+    private boolean handleNotificationExtras(Intent intent) {
+        if (intent == null || intent.getExtras() == null) return false;
+        String link = intent.getStringExtra("linkUrl");
+        if (link == null || link.isBlank()) return false;
+        String normalized = normalizeNotificationLink(link);
+        Uri uri = Uri.parse(normalized);
+        if (!isAllowed(uri)) return false;
+        webView.loadUrl(normalized);
+        return true;
+    }
+
+    private String normalizeNotificationLink(String link) {
+        String value = link == null ? "" : link.trim();
+        if (value.startsWith("https://devworks.co.id/")) return value;
+        if (value.startsWith("/")) return "https://devworks.co.id" + value;
+        return "https://devworks.co.id/client/dashboard/attendance";
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (!handleOAuthCallback(intent)) handleNotificationLink(intent);
+        if (!handleOAuthCallback(intent) && !handleNotificationLink(intent)) handleNotificationExtras(intent);
     }
 
     private boolean isPdfUrl(Uri uri) {

@@ -51,6 +51,10 @@
                     android:scheme="devworksattendance"
                     android:host="oauth-complete" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="OPEN_ATTENDANCE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <service
             android:name=".DevworksFirebaseMessagingService"
