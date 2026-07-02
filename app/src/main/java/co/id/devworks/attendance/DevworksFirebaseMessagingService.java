@@ -54,7 +54,8 @@ public final class DevworksFirebaseMessagingService extends FirebaseMessagingSer
             ? new Notification.Builder(this, MainActivity.ATTENDANCE_NOTIFICATION_CHANNEL)
             : new Notification.Builder(this);
         Notification notification = builder
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(getColor(R.color.devworks_green))
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(new Notification.BigTextStyle().bigText(body))

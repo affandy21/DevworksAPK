@@ -128,7 +128,6 @@ public final class MainActivity extends Activity implements LocationListener {
         configureWebView();
         createNotificationChannel();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestNotificationPermission();
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT,
                 this::handleBackNavigation
@@ -1069,7 +1068,10 @@ public final class MainActivity extends Activity implements LocationListener {
         public void onPageFinished(WebView view, String url) {
             progressBar.setVisibility(View.GONE);
             if (!pageLoadFailed && !(mockLocationBlocked && isAttendancePage())) hideMessage();
-            if (isAllowed(Uri.parse(url)) && !isNavigationBoundaryUrl(url)) registerFcmToken();
+            if (isAllowed(Uri.parse(url)) && !isNavigationBoundaryUrl(url)) {
+                requestNotificationPermission();
+                registerFcmToken();
+            }
         }
 
         @Override
