@@ -1,12 +1,12 @@
 # Devworks Attendance Android
 
 Native Android shell for the Devworks employee attendance workflow. The app opens
-`https://devworks.co.id/login` first and keeps authenticated Devworks pages inside a
+`https://devworks.co.id/employee/login` first and keeps authenticated Devworks pages inside a
 restricted WebView.
 
 ## Included
 
-- Login as the first page and persistent first-party session cookies.
+- Employee-only attendance login as the first page and persistent first-party session cookies.
 - Google, Facebook, and X OAuth in an in-app Custom Tab with verified App Link return and one-time session handoff.
 - HTTPS-only navigation restricted to `devworks.co.id` and its subdomains.
 - Runtime precise-location and camera permissions.
@@ -41,11 +41,11 @@ SDK 36.1. Android Studio can install missing SDK packages from SDK Manager.
 The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`. A release
 bundle is unsigned until a release signing key is configured.
 
-The latest verified artifacts are also copied outside the disposable Gradle build
-directory:
+The latest verified release artifacts are also copied outside the disposable Gradle
+build directory:
 
-- `/home/dw-server/srv/devworks/artifacts/android/DevworksAttendance-1.0.2-debug.apk`
-- `/home/dw-server/srv/devworks/artifacts/android/DevworksAttendance-1.0.0-unsigned.aab`
+- `/home/dw-server/srv/devworks/artifacts/android/Devworks V1.0.6.apk`
+- `/home/dw-server/srv/devworks/artifacts/android/Devworks V1.0.6.aab`
 
 ## Release signing
 

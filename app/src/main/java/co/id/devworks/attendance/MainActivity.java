@@ -71,7 +71,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MainActivity extends Activity implements LocationListener {
-    private static final String LOGIN_URL = "https://devworks.co.id/login";
+    private static final String LOGIN_URL = "https://devworks.co.id/employee/login";
     private static final String OAUTH_START_PATH = "/api/auth/oauth/";
     private static final String OAUTH_APP_CALLBACK_PATH = "/app/oauth-complete";
     private static final String OAUTH_MOBILE_COMPLETE_URL = "https://devworks.co.id/api/auth/oauth/mobile/complete";
@@ -263,6 +263,7 @@ public final class MainActivity extends Activity implements LocationListener {
         String path = uri.getPath();
         return path == null
             || "/login".equals(path)
+            || "/employee/login".equals(path)
             || OAUTH_APP_CALLBACK_PATH.equals(path)
             || "/api/auth/oauth/mobile/complete".equals(path)
             || path.startsWith(OAUTH_START_PATH);
