@@ -44,8 +44,8 @@ bundle is unsigned until a release signing key is configured.
 The latest verified release artifacts are also copied outside the disposable Gradle
 build directory:
 
-- `/home/dw-server/srv/devworks/artifacts/android/Devworks V1.0.6.apk`
-- `/home/dw-server/srv/devworks/artifacts/android/Devworks V1.0.6.aab`
+- `/home/dw-server/srv/devworks/artifacts/android/Devworks Absensi V1.0.7.apk`
+- `/home/dw-server/srv/devworks/artifacts/android/Devworks Absensi V1.0.7.aab`
 
 ## Release signing
 

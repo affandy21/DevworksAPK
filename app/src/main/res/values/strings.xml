@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Devworks</string>
+    <string name="app_name">Devworks Absensi</string>
     <string name="press_back_to_exit">Tekan kembali lagi untuk keluar</string>
     <string name="connection_title">Halaman tidak dapat dibuka</string>
     <string name="connection_message">Periksa koneksi internet lalu coba kembali.</string>
